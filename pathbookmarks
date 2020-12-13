@@ -1,0 +1,30 @@
+#!/bin/env bash
+
+bookmarkFile="${HOME}/.pathBookmarks"
+
+if [[ $* == "--list" ]]; then
+    cat "${bookmarkFile}"
+    exit
+fi
+
+if (( $# == 1 )); then
+    searchString="${*}"
+
+    while read -r line; do
+        if echo "${line}" | grep -iq -- "${searchString}"; then
+            echo "${line}" |
+                cut -d":" -f2 |
+                cut -b1 --complement # remove leading space
+        fi
+    done <"${bookmarkFile}"
+
+elif (( $# == 2 )); then
+    name="${1}"
+    path="$( realpath "${2}" )"
+
+    echo "${name} : ${path}" >>"${bookmarkFile}"
+
+elif (( $# == 0 || $# > 2 )); then
+    echo "USAGE: $0 { searchPattern | {name} {path} }"
+    exit
+fi

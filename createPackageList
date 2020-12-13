@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# cron executes this as the user so $HOME is actually set
+installedPackagesFile="${HOME}/.installed-packages"
+[[ ! -f "${installedPackagesFile}" ]] && touch "${installedPackagesFile}"
+
+lastTime="$(head -n1 "${installedPackagesFile}")"
+today="$(date --iso-8601)"
+
+if [[ ${lastTime} !=  "${today}" ]]; then
+    echo -ne "${today}\n----------\n" >"${installedPackagesFile}"
+
+    apt list --installed 2>/dev/null |
+        tail -n+2 | # remove first line "Listing..."
+        grep -v -i -E "\,(automatisch|automatic)\]" >>"${installedPackagesFile}"
+fi

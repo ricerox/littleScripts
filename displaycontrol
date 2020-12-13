@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#
+# Controlling the Official Raspberry Pi 7" Display
+#
+
+DISPLAY_SYS_DIR="/sys/class/backlight/rpi_backlight"
+BACKLIGHT_POWER_FILE="${DISPLAY_SYS_DIR}/bl_power"
+DISPLAY_BRIGHTNESS_FILE="${DISPLAY_SYS_DIR}/brightness"
+declare -r DISPLAY_SYS_DIR BACKLIGHT_POWER_FILE DISPLAY_BRIGHTNESS_FILE
+
+if [[ ! -d "${DISPLAY_SYS_DIR}" ]]; then
+    echo "The display isn't plugged in" >&2
+    exit 1
+fi
+
+command="${1}"
+argument="${2}"
+
+writeToFile() {
+    #shellcheck disable=SC2002 # stdin is passed to sudo
+    cat /dev/stdin | sudo tee "${1}" >/dev/null
+}
+
+case "${command}" in
+    "disable")
+		echo "1" | writeToFile "${BACKLIGHT_POWER_FILE}"
+		echo "Disabled Display"
+		;;
+    "enable")
+		echo "0" | writeToFile "${BACKLIGHT_POWER_FILE}"
+		echo "Enabled Display"
+		;;
+	"brightness")
+        if [[ "${argument}" != "" ]] && (( 0 <= argument )) && (( argument <= 255 )); then
+            echo "${argument}" | writeToFile "${DISPLAY_BRIGHTNESS_FILE}"
+            echo "Set display brightness to ${argument}/255"
+        else
+            echo "Only values between 0 and 255 are valid."
+        fi
+        ;;
+esac
