@@ -2,7 +2,7 @@
 
 bookmarkFile="${HOME}/.pathBookmarks"
 
-if [[ $* == "--list" ]]; then
+if (( $# == 0 )) || [[ ${*} == "--list" ]]; then
     cat "${bookmarkFile}"
     exit
 fi
@@ -24,7 +24,7 @@ elif (( $# == 2 )); then
 
     echo "${name} : ${path}" >>"${bookmarkFile}"
 
-elif (( $# == 0 || $# > 2 )); then
+elif (( $# > 2 )) || [[ ${*} == *" -h "* ]] || [[ ${*} == *" --help "* ]]; then
     echo "USAGE: $0 { searchPattern | {name} {path} }"
     exit
 fi
