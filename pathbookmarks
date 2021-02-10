@@ -2,8 +2,13 @@
 
 bookmarkFile="${HOME}/.pathBookmarks"
 
-if (( $# == 0 )) || [[ ${*} == "--list" ]]; then
+if (( $# == 0 )) || [[ "${1}" == "--list" ]]; then
     cat "${bookmarkFile}"
+    exit
+fi
+
+if [[ "${1}" == "--file" ]]; then
+    echo "${bookmarkFile}"
     exit
 fi
 
