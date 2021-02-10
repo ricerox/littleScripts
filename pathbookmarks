@@ -22,9 +22,13 @@ elif (( $# == 2 )); then
     name="${1}"
     path="$( realpath "${2}" )"
 
+    if (( $# != 0 )); then
+        echo >&2 "Cannot add path to bookmarks. The path does not exist"
+        exit 1
+    fi
+
     echo "${name} : ${path}" >>"${bookmarkFile}"
 
 elif (( $# > 2 )) || [[ ${*} == *" -h "* ]] || [[ ${*} == *" --help "* ]]; then
     echo "USAGE: $0 { searchPattern | {name} {path} }"
-    exit
 fi
