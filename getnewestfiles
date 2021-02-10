@@ -1,0 +1,31 @@
+#!/bin/bash
+
+host="${1}"
+path="${2}"
+amountOfFiles="${3}"
+
+serverResponse="$( curl -s "${host}${path}/" )" # The "/" in the end causes curl to show the index of the directory
+
+if (( $? != 0 )); then
+    echo >&2 "The selected destination is not reachable"
+    exit 1
+fi
+
+if [[ "${serverResponse}" == "" ]]; then
+    echo "There aren't any files in the selected directory"
+    exit 2
+fi
+
+read -r -d" " -a allFiles <<<"$(
+        echo "${serverResponse}" |
+        rev | cut -d" " -f1 | rev |
+        sort -n
+    )"
+
+start=$(( ${#allFiles[@]} - 1 ))
+end=$(( start - amountOfFiles ))
+for ((i=start; i>end; i--)); do
+    currentFile="${allFiles[${i}]}"
+    echo "Downloading file: ${currentFile}"
+    curl --silent "${host}${path}/${currentFile}" -O
+done
