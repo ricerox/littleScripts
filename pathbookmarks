@@ -18,8 +18,8 @@ if (( $# == 1 )); then
     while read -r line; do
         if echo "${line}" | grep -iq -- "${searchString}"; then
             echo "${line}" |
-                cut -d":" -f2 |
-                cut -b1 --complement # remove leading space
+                cut -d":" -f1 --complement |
+                sed 's/^[[:space:]]*//'
         fi
     done <"${bookmarkFile}"
 
