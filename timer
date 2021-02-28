@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+time="${1:-0}"
+notifiSummary="${2:-"Timer ended"}"
+notifiBody="${time} passed"
+
+if [[ "${time}" == "0" ]] || [[ "${time}" == "-"* ]]; then
+    echo >&2 "Please specify a time >0"
+    exit 1
+fi
+
+[[ "${time}" =~ ^[0-9]+$ ]] && time="${time}s"
+
+echo "Started timer for ${time}"
+
+# Start sleeping in background so we're not blocking the terminal
+{
+    sleep "${time}"
+
+    # urgency=critical makes the notification persistent
+    notify-send -u critical -i timer "${notifiSummary}" "${notifiBody}" 2>/dev/null
+
+    #spdVolume="-75"
+    #spd-say -w --volume "${spdVolume}" -l de-DE "Timer ended"
+    #for (( i = 0; i < 5; i++)); do
+    #    spd-say -w --volume "${spdVolume}" -l de-DE "a"
+    #done
+} &
