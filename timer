@@ -12,8 +12,8 @@ fi
 [[ "${time}" =~ ^[0-9]+$ ]] && time="${time}s"
 
 longDuration="${time/s/ seconds}"
-longDuration="${time/m/ minutes}"
-longDuration="${time/h/ hours}"
+longDuration="${longDuration/m/ minutes}"
+longDuration="${longDuration/h/ hours}"
 
 endTime="$(
     date --iso-8601=minutes --date="${longDuration}" |
