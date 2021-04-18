@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+#
+# Get the newest files from a directory of a remote ftp server
+# Author: pixELSflash
+# License: MIT
+# Repo: https://github.com/pixELSflash/littleScripts/
+#
+
 host="${1}"
 path="${2}"
 amountOfFiles="${3}"

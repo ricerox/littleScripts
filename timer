@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+#
+# A simple timer which sends a notification after the specified time
+# Author: pixELSflash
+# License: MIT
+# Repo: https://github.com/pixELSflash/littleScripts/
+#
+
 time="${1:-0}"
 notifiSummary="${2:-"Timer ended"}"
 notifiBody="${time} passed"

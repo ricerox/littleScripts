@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+#
+# Create a list of all ("manually") installed packages
+# Author: pixELSflash
+# License: MIT
+# Repo: https://github.com/pixELSflash/littleScripts/
+#
+
 # cron executes this as the user so $HOME is actually set
 installedPackagesFile="${HOME}/.installed-packages"
 [[ ! -f "${installedPackagesFile}" ]] && touch "${installedPackagesFile}"

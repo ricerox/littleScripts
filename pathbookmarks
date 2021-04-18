@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+#
+# Create and access bookmarks for file paths
+# Author: pixELSflash
+# License: MIT
+# Repo: https://github.com/pixELSflash/littleScripts/
+#
+
 bookmarkFile="${HOME}/.pathBookmarks"
 
 if (( $# == 0 )) || [[ "${1}" == "--list" ]]; then
