@@ -42,4 +42,7 @@ case "${command}" in
             echo "Only values between 0 and 255 are valid."
         fi
         ;;
+    * )
+        echo "displaycontrol: missing command"
+        echo "Usage: displaycontrol { disable | enable | brightness [number] }"
 esac
