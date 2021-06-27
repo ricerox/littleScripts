@@ -7,6 +7,12 @@
 # Repo: https://github.com/pixELSflash/littleScripts/
 #
 
+if (( $# < 3 )); then
+    echo >&2 "Missing arguments."
+    echo >&2 "use '--help' for further help."
+    exit 1
+fi
+
 host="${1}"
 path="${2}"
 amountOfFiles="${3}"
@@ -15,12 +21,12 @@ serverResponse="$( curl -s "${host}${path}/" )" # The "/" in the end causes curl
 
 if (( $? != 0 )); then
     echo >&2 "The selected destination is not reachable"
-    exit 1
+    exit 2
 fi
 
 if [[ "${serverResponse}" == "" ]]; then
     echo "There aren't any files in the selected directory"
-    exit 2
+    exit 3
 fi
 
 read -r -d" " -a allFiles <<<"$(
