@@ -7,7 +7,7 @@
 # Repo: https://github.com/pixELSflash/littleScripts/
 #
 
-if (( $# < 3 )); then
+if (( $# < 2 )); then
     echo >&2 "Missing arguments."
     echo >&2 "use '--help' for further help."
     exit 1
@@ -15,7 +15,7 @@ fi
 
 host="${1}"
 path="${2}"
-amountOfFiles="${3}"
+amountOfFiles="${3:-1}"
 
 serverResponse="$( curl -s "${host}${path}/" )" # The "/" in the end causes curl to show the index of the directory
 
