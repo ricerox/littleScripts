@@ -24,11 +24,15 @@ host="${1}"
 path="${2}"
 amountOfFiles="${3:-1}"
 
-serverResponse="$( curl -s "${host}${path}/" )" # The "/" in the end causes curl to show the index of the directory
+serverResponse="$( LANG=C curl -s "${host}${path}/" )" # The "/" in the end causes curl to show the index of the directory
+curlStatus=$?
 
-if (( $? != 0 )); then
+if (( ${curlStatus} == 7 )); then
     echo >&2 "The selected destination is not reachable"
-    exit 2
+    exit 7
+elif (( ${curlStatus} == 9 || ${curlStatus} == 78 )); then
+    echo >&2 "The selected file does not exist"
+    exit ${curlStatus}
 fi
 
 if [[ "${serverResponse}" == "" ]]; then
