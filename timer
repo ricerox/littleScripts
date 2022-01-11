@@ -7,18 +7,24 @@
 # Repo: https://github.com/pixELSflash/littleScripts/
 #
 
-time="${1:-0}"
-notifiSummary="${2:-"Timer ended"}"
-notifiBody="${time} passed"
-
-if [[ "${time}" == "0" ]] || [[ "${time}" == "-"* ]]; then
-    echo >&2 "Please specify a time >0"
+if (( $# == 0 )) || [[ "${1}" == *"-h"* ]]; then
+    echo "Usage: timer <duration> [description]"
     exit 1
 fi
 
-[[ "${time}" =~ ^[0-9]+$ ]] && time="${time}s"
+duration="${1:-0}"
+notifiSummary="${2:-"Timer ended"}"
+notifiBody="${duration} passed"
 
-longDuration="${time/s/ seconds}"
+if [[ "${duration}" == "0" ]] || [[ "${duration}" == "-"* ]]; then
+    echo >&2 "Please specify a duration >0"
+    exit 1
+fi
+
+# Add 's' to the end when the duration is only a number without unit is supplied
+[[ "${duration}" =~ ^[0-9]+$ ]] && duration="${duration}s"
+
+longDuration="${duration/s/ seconds}"
 longDuration="${longDuration/m/ minutes}"
 longDuration="${longDuration/h/ hours}"
 
@@ -27,11 +33,11 @@ endTime="$(
     cut -d"+" -f1
 )"
 
-echo "Started timer for ${time} (${endTime})"
+echo "Started timer for ${duration} (${endTime})"
 
 # Start sleeping in background so we're not blocking the terminal
 {
-    sleep "${time}"
+    sleep "${duration}"
 
     # urgency=critical makes the notification persistent
     notify-send -u critical -i timer "${notifiSummary}" "${notifiBody}" 2>/dev/null
