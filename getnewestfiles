@@ -32,7 +32,7 @@ if (( ${curlStatus} == 7 )); then
     exit 7
 elif (( ${curlStatus} == 9 || ${curlStatus} == 78 )); then
     echo >&2 "The selected file does not exist"
-    exit ${curlStatus}
+    exit "${curlStatus}"
 fi
 
 if [[ "${serverResponse}" == "" ]]; then
@@ -50,6 +50,7 @@ start=$(( ${#allFiles[@]} - 1 ))
 end=$(( start - amountOfFiles ))
 for ((i=start; i>end; i--)); do
     currentFile="${allFiles[${i}]}"
-    echo "Downloading file: ${currentFile}"
-    curl --silent "${host}${path}/${currentFile}" -O
+    curl --silent "${host}${path}/${currentFile}" -O &&
+        echo "Downloaded file: ${currentFile}" ||
+        echo "Failed to download: ${currentFile}"
 done
