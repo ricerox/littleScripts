@@ -15,7 +15,14 @@ lastTime="$(head -n1 "${installedPackagesFile}")"
 today="$(date --iso-8601)"
 
 if [[ ${lastTime} !=  "${today}" ]]; then
-    echo -ne "${today}\n----------\n" >"${installedPackagesFile}"
+    {
+        echo -e "${today}\n=========="
 
-    LANG=C apt-mark showmanual >>"${installedPackagesFile}"
+        echo -e "apt\n----------"
+        LANG=C apt-mark showmanual
+
+        echo -e "----------\npip\n----------"
+        LANG=C pip freeze
+
+    } >"${installedPackagesFile}"
 fi
