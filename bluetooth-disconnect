@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+#
+# Disconnect from all bluetooth devices and power off bluetooth easily
+# Author: pixELSflash
+# License: MIT
+# Repo: https://github.com/pixELSflash/littleScripts/
+#
+
+{
+    bluetoothctl disconnect
+    bluetoothctl power off
+} | grep -i succe

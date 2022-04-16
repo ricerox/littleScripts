@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+#
+# Connecting to a bluetooth device easily
+# Author: pixELSflash
+# License: MIT
+# Repo: https://github.com/pixELSflash/littleScripts/
+#
+
+if [[ "${1}" == *":"* ]]; then
+    device="${1}"
+elif [[ "${1}" != "" ]]; then
+    device="$(
+        bluetoothctl devices |
+        grep -i "${1}" |
+        cut -d" " -f2
+    )"
+    deviceCount="$( echo "${device}" | wc -l )"
+    if (( deviceCount > 1)); then
+        echo >&2 "The device identifier is ambiguous."
+        exit 1
+    fi
+else
+    echo >&2 "A device ID must be supplied."
+    exit 1
+fi
+
+# My raspberry pi doesn't always load this module,
+# so in this script we load it manually since the connection doesn't work otherwise.
+if ! pactl list modules | grep -i -q module-bluetooth-discover; then
+    pactl load-module module-bluetooth-discover
+fi
+
+{
+    bluetoothctl power on
+    bluetoothctl connect "${device}"
+    ret=$?
+} >/dev/null
+
+if (( $ret != 0 )); then
+    echo >&2 "something went wrong while connecting."
+    exit 2
+else
+    echo "Connected successfully to ${device}."
+fi
