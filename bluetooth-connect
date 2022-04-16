@@ -28,7 +28,7 @@ fi
 # My raspberry pi doesn't always load this module,
 # so in this script we load it manually since the connection doesn't work otherwise.
 if ! pactl list modules | grep -i -q module-bluetooth-discover; then
-    pactl load-module module-bluetooth-discover
+    pactl load-module module-bluetooth-discover >/dev/null 2>&1
 fi
 
 {
