@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# Connecting to a bluetooth device easily
+# Connecting to a bluetooth speaker easily
 # Author: pixELSflash
 # License: MIT
 # Repo: https://github.com/pixELSflash/littleScripts/
@@ -41,5 +41,12 @@ if (( $ret != 0 )); then
     echo >&2 "something went wrong while connecting."
     exit 2
 else
-    echo "Connected successfully to ${device}."
+    echo "Successfully connected to ${device}."
+fi
+
+paSocketName="$( pacmd list-sinks | grep -E 'name:|index' | grep -i blue | cut -d"<" -f2 | cut -d">" -f1 )"
+pacmd "set-default-sink ${paSocketName}"
+
+if (( $? == 0 )); then
+    echo "Successfully set speaker as audio output."
 fi
