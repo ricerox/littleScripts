@@ -1,0 +1,7 @@
+#!/bin/bash
+
+enabled="$( gsettings get org.gnome.desktop.notifications show-banners )"
+
+now="$( "${enabled}" && echo false || echo true )"
+
+gsettings set org.gnome.desktop.notifications show-banners "${now}"
