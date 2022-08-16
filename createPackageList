@@ -19,10 +19,13 @@ if [[ ${lastTime} !=  "${today}" ]]; then
         echo -e "${today}\n=========="
 
         echo -e "apt\n----------"
-        LANG=C apt-mark showmanual
+        LANG=C apt list --manual-installed | tail -n+2
 
         echo -e "----------\npip\n----------"
         LANG=C pip freeze
+
+        echo -e "----------\nflatpak\n----------"
+        LANG=C flatpak list --app
 
     } >"${installedPackagesFile}"
 fi
