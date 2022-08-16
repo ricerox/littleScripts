@@ -16,6 +16,7 @@ elif [[ "${1}" != "" ]]; then
         cut -d" " -f2
     )"
     deviceCount="$( echo "${device}" | wc -l )"
+
     if (( deviceCount > 1)); then
         echo >&2 "The device identifier is ambiguous."
         exit 1
@@ -27,7 +28,7 @@ fi
 
 # My raspberry pi doesn't always load this module,
 # so in this script we load it manually since the connection doesn't work otherwise.
-if ! pactl list modules | grep -i -q module-bluetooth-discover; then
+if ! pactl list modules | grep -i -q "module-bluetooth-discover"; then
     pactl load-module module-bluetooth-discover >/dev/null 2>&1
 fi
 
@@ -37,7 +38,7 @@ fi
     ret=$?
 } >/dev/null
 
-if (( $ret != 0 )); then
+if (( ${ret} != 0 )); then
     echo >&2 "something went wrong while connecting."
     exit 2
 else
