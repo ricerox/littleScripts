@@ -8,7 +8,7 @@
 #
 
 # cron executes this as the user so $HOME is actually set
-installedPackagesFile="${HOME}/.installed-packages"
+installedPackagesFile="${HOME}/.packagelist"
 [[ ! -f "${installedPackagesFile}" ]] && touch "${installedPackagesFile}"
 
 lastTime="$(head -n1 "${installedPackagesFile}")"
@@ -16,16 +16,23 @@ today="$(date --iso-8601)"
 
 if [[ ${lastTime} !=  "${today}" ]]; then
     {
+        export LANG=C
+
         echo -e "${today}\n=========="
 
-        echo -e "apt\n----------"
-        LANG=C apt list --manual-installed | tail -n+2
+        if command -v apt >/dev/null 2>&/dev/null; then
+            echo -e "apt\n----------"
+            apt list --manual-installed | tail -n+2
+        elif command -v pacman >/dev/null 2>&/dev/null; then
+            echo -e "pacman\n----------"
+            pacman -Qe
+        fi
 
         echo -e "----------\npip\n----------"
-        LANG=C pip freeze
+        pip freeze
 
         echo -e "----------\nflatpak\n----------"
-        LANG=C flatpak list --app
+        flatpak list --app
 
     } >"${installedPackagesFile}"
 fi
