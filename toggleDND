@@ -1,7 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+#
+# Quickly toggle (or set) Gnome's do not disturb mode
+# Author: pixELSflash
+# License: MIT
+# Repo: https://github.com/pixELSflash/littleScripts/
+#
 
 enabled="$( gsettings get org.gnome.desktop.notifications show-banners )"
 
-now="$( "${enabled}" && echo false || echo true )"
+if [[ "${1}" == "on" ]] || [[ "${1}" == "true" ]]; then
+    now="false"
+elif [[ "${1}" == "off" ]] || [[ "${1}" == "false" ]]; then
+    now="true"
+else
+    now="$( "${enabled}" && echo false || echo true )"
+fi
 
 gsettings set org.gnome.desktop.notifications show-banners "${now}"
