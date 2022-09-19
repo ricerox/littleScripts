@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#
+# Cycling through audio output devices
+# Author: pixELSflash
+# License: MIT
+# Repo: https://github.com/pixELSflash/littleScripts/
+#
+
+if [[ "${1}" == "-r" ]] || [[ "${1}" == "--reversed" ]]; then
+    reversed="true"
+else
+    reversed="false"
+fi
+
+mapfile -t all_sink_ids < <(pactl list short sinks | cut -f1)
+running_sink_id="$( pactl list short sinks | grep "RUNNING" | cut -f1 )"
+
+for i in "${!all_sink_ids[@]}"; do
+    if [[ "${all_sink_ids[$i]}" == "${running_sink_id}" ]]; then
+        current_sink_index="${i}"
+    fi
+done
+
+if "${reversed}"; then
+    new_index="$(( (current_sink_index - 1) % ${#all_sink_ids[@]} ))"
+else
+    new_index="$(( (current_sink_index + 1) % ${#all_sink_ids[@]} ))"
+fi
+
+new_sink_id="${all_sink_ids[${new_index}]}"
+pactl set-default-sink "${new_sink_id}"
