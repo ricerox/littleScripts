@@ -14,10 +14,12 @@ else
 fi
 
 mapfile -t all_sink_ids < <(pactl list short sinks | cut -f1)
-running_sink_id="$( pactl list short sinks | grep "RUNNING" | cut -f1 )"
+
+selected_sink="$( pactl info | grep "Default Sink:" | cut -d" " -f3 )"
+selected_sink_id="$( pactl list short sinks | grep "${selected_sink}" | cut -f1 )"
 
 for i in "${!all_sink_ids[@]}"; do
-    if [[ "${all_sink_ids[$i]}" == "${running_sink_id}" ]]; then
+    if [[ "${all_sink_ids[$i]}" == "${selected_sink_id}" ]]; then
         current_sink_index="${i}"
     fi
 done
@@ -30,3 +32,5 @@ fi
 
 new_sink_id="${all_sink_ids[${new_index}]}"
 pactl set-default-sink "${new_sink_id}"
+
+# REVIEW: make all applications follow this change
