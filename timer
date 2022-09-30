@@ -12,9 +12,18 @@ if (( $# == 0 )) || [[ "${1}" == *"-h"* ]]; then
     exit 1
 fi
 
-duration="${1:-0}"
+timerGoal="${1:-0}"
 notifiSummary="${2:-"Timer ended"}"
-notifiBody="${duration} passed"
+notifiBody="${timerGoal} passed"
+
+# Allow actual times (16:40) as timer times
+if [[ "${timerGoal}" == *":"* ]]; then
+    now="$( date +%s )"
+    timerTime="$( date --date="${timerGoal}" +%s )"
+    duration=$(( timerTime - now ))
+else
+    duration="${timerGoal}"
+fi
 
 if [[ "${duration}" == "0" ]] || [[ "${duration}" == "-"* ]]; then
     echo >&2 "Please specify a duration >0"
