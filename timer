@@ -8,7 +8,7 @@
 #
 
 if (( $# == 0 )) || [[ "${1}" == *"-h"* ]]; then
-    echo "Usage: timer <duration> [description]"
+    echo "Usage: timer <timer_goal> [description]"
     exit 1
 fi
 
@@ -26,11 +26,11 @@ else
 fi
 
 if [[ "${duration}" == "0" ]] || [[ "${duration}" == "-"* ]]; then
-    echo >&2 "Please specify a duration >0"
+    echo >&2 "Please specify a duration or a time in the future."
     exit 1
 fi
 
-# Add 's' to the end when the duration is only a number without unit is supplied
+# Add 's' to the end when only a number without unit is supplied
 [[ "${duration}" =~ ^[0-9]+$ ]] && duration="${duration}s"
 
 longDuration="${duration/s/ seconds}"
@@ -42,7 +42,7 @@ endTime="$(
     cut -d"+" -f1
 )"
 
-echo "Started timer for ${duration} (${endTime})"
+echo "Started timer for ${duration} (${endTime})."
 
 # Start sleeping in background so we're not blocking the terminal
 {
