@@ -2,9 +2,9 @@
 
 #
 # A simple timer which sends a notification after the specified time
-# Author: pixELSflash
+# Author: ricerox
 # License: MIT
-# Repo: https://github.com/pixELSflash/littleScripts/
+# Repo: https://github.com/ricerox/littleScripts/
 #
 
 if (( $# == 0 )) || [[ "${1}" == *"-h"* ]]; then
@@ -50,10 +50,8 @@ echo "Started timer for ${duration} (${endTime})."
 
     # urgency=critical makes the notification persistent
     notify-send -u critical -i timer "${notifiSummary}" "${notifiBody}" 2>/dev/null
-
-    #spdVolume="-75"
-    #spd-say -w --volume "${spdVolume}" -l de-DE "Timer ended"
-    #for (( i = 0; i < 5; i++)); do
-    #    spd-say -w --volume "${spdVolume}" -l de-DE "a"
-    #done
 } &
+echo "Started timer (PID: $!) for ${duration} (${endTime})."
+
+# REVIEW: If we need a `--blocking` or `--foreground` option, we could wrap the bash
+#   call into another function which then gets called in the background or in the foreground

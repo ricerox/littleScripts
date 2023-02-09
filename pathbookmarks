@@ -2,9 +2,9 @@
 
 #
 # Create and access bookmarks for file paths
-# Author: pixELSflash
+# Author: ricerox
 # License: MIT
-# Repo: https://github.com/pixELSflash/littleScripts/
+# Repo: https://github.com/ricerox/littleScripts/
 #
 
 bookmarkFile="${HOME}/.pathBookmarks"

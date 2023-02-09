@@ -2,9 +2,9 @@
 
 #
 # Cycling through audio output devices
-# Author: pixELSflash
+# Author: ricerox
 # License: MIT
-# Repo: https://github.com/pixELSflash/littleScripts/
+# Repo: https://github.com/ricerox/littleScripts/
 #
 
 if [[ "${1}" == "-r" ]] || [[ "${1}" == "--reversed" ]]; then

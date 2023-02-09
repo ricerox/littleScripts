@@ -2,9 +2,9 @@
 
 #
 # Controlling the Official Raspberry Pi 7" Display
-# Author: pixELSflash
+# Author: ricerox
 # License: MIT
-# Repo: https://github.com/pixELSflash/littleScripts/
+# Repo: https://github.com/ricerox/littleScripts/
 #
 
 DISPLAY_SYS_DIR="/sys/class/backlight/rpi_backlight"

@@ -2,9 +2,9 @@
 
 #
 # Squeeze the output of a command to a single line
-# Author: pixELSflash
+# Author: ricerox
 # License: MIT
-# Repo: https://github.com/pixELSflash/littleScripts/
+# Repo: https://github.com/ricerox/littleScripts/
 #
 
 if [[ ! -p /dev/stdin ]]; then
