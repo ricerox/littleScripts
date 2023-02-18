@@ -13,8 +13,8 @@ if (( $# == 0 )) || [[ "${1}" == *"-h"* ]]; then
 fi
 
 timerGoal="${1:-0}"
-notifiSummary="${2:-"Timer ended"}"
-notifiBody="${timerGoal} passed"
+shift
+notifiSummary="${*:-"Timer ended"}"
 
 # Allow actual times (16:40) as timer times
 if [[ "${timerGoal}" == *":"* ]]; then
