@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+#
+# Append a PDF file to another PDF file "in-place".
+# Plain pdfunite breaks when input and output file are the same.
+#
+# Author: ricerox
+# License: MIT
+# Repo: https://github.com/ricerox/littleScripts/
+#
+
+if (( $# != 2 )) || [[ $* == *"--help"* ]]; then
+    echo >&2 "Usage: $0 pdf appendage"
+fi
+
+
+pdf=${1}
+appendage=${2}
+
+tmp=${ mktemp; }
+trap 'rm "${tmp}"' EXIT
+
+cp "${pdf}" "${tmp}"
+pdfunite "${tmp}" "${appendage}" "${pdf}"

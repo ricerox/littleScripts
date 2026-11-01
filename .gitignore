@@ -11,3 +11,5 @@
 !toggleDND
 !cycleaudiooutput
 !singlelineout
+!pdfappend
+!pdfsplit
