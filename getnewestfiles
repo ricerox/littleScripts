@@ -33,6 +33,9 @@ if (( ${curlStatus} == 7 )); then
 elif (( ${curlStatus} == 9 || ${curlStatus} == 78 )); then
     echo >&2 "The selected file does not exist"
     exit "${curlStatus}"
+elif (( ${curlStatus} != 0 )); then
+    echo >&2 "Something went wrong with the request"
+    exit 1
 fi
 
 if [[ "${serverResponse}" == "" ]]; then
@@ -42,6 +45,7 @@ fi
 
 read -r -d" " -a allFiles <<<"$(
         echo "${serverResponse}" |
+        grep -v '^d' | # Exclude directories
         rev | cut -d" " -f1 | rev |
         sort -n
     )"
